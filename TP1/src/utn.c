@@ -352,7 +352,7 @@ int utn_cal_Menu (float *pResultadoOperacion, float operador1, float operador2, 
 			}
 		}
 
-	}while (reintentos >=0 );
+	}while (reintentos <=0 );
 
 	return retorno;
 }
@@ -363,7 +363,7 @@ int utn_cal_Menu (float *pResultadoOperacion, float operador1, float operador2, 
 * \param int reintentos, cantidad de oportunidades para ingresar el dato.
  * \return (-1) Error / (0) Ok
  */
-int utn_cal_Confirm (char* pContinuar, int reintentos)
+int utn_cal_Confirm (int* pContinuar, int reintentos)
 {
 	int retorno = -1;
 	char opcionIngresada;
@@ -377,6 +377,8 @@ int utn_cal_Confirm (char* pContinuar, int reintentos)
 			case 'N':
 				*pContinuar = 0;
 				retorno = 0;
+				reintentos = -1;
+				printf("\n---------------------------------\n------ APAGANDO EL SISTEMA ------\n---------------------------------");
 				break;
 
 			case 'S':
@@ -386,7 +388,7 @@ int utn_cal_Confirm (char* pContinuar, int reintentos)
 				reintentos--;
 		}
 
-	}while(reintentos >=0 && retorno -1);
+	}while(reintentos >=0);
 
 	return retorno;
 }

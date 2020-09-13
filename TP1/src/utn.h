@@ -17,6 +17,6 @@ int utn_multiplicacion (float* pResultadoMultiplicacion, float operador1, float 
 int utn_division (float* pResultadoDivision, float operador1, float operador2);
 int utn_factorial (double *pResultadoFactorial, float operador);
 int utn_cal_Menu (float *pResultadoOperacion, float operador1, float operador2, int reintentos, double *pResultadoOperacionFactorial, int *pContinuar);
-int utn_cal_Confirm (char* pContinuar, int reintentos);
+int utn_cal_Confirm (int* pContinuar, int reintentos);
 
 #endif /* UTN_H_ */

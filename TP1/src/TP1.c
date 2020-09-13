@@ -16,7 +16,6 @@ int main(void) {
 	setbuf(stdout, NULL);
 	float primerNumeroIngresado;
 	float segundoNumeroIngresado;
-	char opcionIngresada;
 	float resultadoOperacion;
 	double resultadoOperacionFactorial;
 	int continuar = 1;
@@ -33,7 +32,7 @@ int main(void) {
 					utn_cal_Menu(&resultadoOperacion, primerNumeroIngresado, segundoNumeroIngresado, reintentos,&resultadoOperacionFactorial,&continuar);
 					if(continuar == 1)
 					{
-						utn_cal_Confirm(&opcionIngresada, reintentos);
+						utn_cal_Confirm(&continuar, reintentos);
 					}
 				}
 		}
