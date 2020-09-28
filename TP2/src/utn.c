@@ -1,10 +1,10 @@
 /*
  ============================================================================
- Name        : UTN.C
+ Name        : TP2.c
  Author      : Unía, Ezequiel Matías
  Version     :
  Copyright   :
- Description : Bibioteca "utn-c"
+ Description : Trabajo préctico 2
  ============================================================================
  */
 
@@ -14,8 +14,9 @@
 #include <string.h>
 #include "utn.h"
 
+static int myGets(char* pArray, int len);
 static int isNumber(char* pArray);
-static int isString(char* pArray);
+static int isName(char* pArray);
 
 /**
  * \brief Lee los datos ingresados por consola y graba en un array.
@@ -23,7 +24,7 @@ static int isString(char* pArray);
  * \param int len, La longitud del array.
  * \return (-1) Error / (0) Ok
  */
-int myGets(char* pArray, int len)
+static int myGets(char* pArray, int len)
 {
 	int retorno = -1;
 	if (pArray != NULL && len > 0 && fgets(pArray, len, stdin))
@@ -38,7 +39,6 @@ int myGets(char* pArray, int len)
 	return retorno;
 }
 
-
 /**
  * \brief Se pide por consola un número entero al usuario.
  * \param int *pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
@@ -50,16 +50,16 @@ int myGets(char* pArray, int len)
  * \param int min, Número minimo permitido.
  * \return (-1) Error / (0) Ok
  */
-int utn_getInt(int *pArray, int len, int attemps, char* msg, char* msgError, int max, int min)
+int utn_getInt(int *pArray, int len, int attempts, char* msg, char* msgError, int max, int min)
 {
 	int retorno = -1;
 	char bufferString[len];
 
-	if(msg != NULL && msgError != NULL && pArray != NULL && attemps >= 0 && max >= min)
+	if(msg != NULL && msgError != NULL && pArray != NULL && attempts >= 0 && max >= min)
 	{
 		do
 		{
-			printf("%s", msg);
+			printf("%s\n> ", msg);
 			if(myGets(bufferString, len) == 0 && isNumber(bufferString) == 1)
 			{
 				retorno = 0;
@@ -69,10 +69,10 @@ int utn_getInt(int *pArray, int len, int attemps, char* msg, char* msgError, int
 			else
 			{
 				printf("%s", msgError);
-				attemps--;
+				attempts--;
 			}
 
-		}while(attemps >= 0);
+		}while(attempts >= 0);
 	}
 	return retorno;
 }
@@ -96,7 +96,7 @@ int utn_getChar (char* pArray, int len, char* msg, char* msgError, int attemps)
 		while (attemps >= 0)
 		{
 			printf("%s\n> ", msg);
-			if(myGets(bufferString, len) == 0 && isString(bufferString) == 1)
+			if(myGets(bufferString, len) == 0 && isName(bufferString) == 1)
 			{
 				strncpy(pArray, bufferString, len);
 				retorno = 0;
@@ -106,7 +106,7 @@ int utn_getChar (char* pArray, int len, char* msg, char* msgError, int attemps)
 				attemps--;
 				if (attemps > 0)
 				{
-					printf("%s\n> ", msgError);
+					printf("%s\n", msgError);
 				}else if(attemps < 0)
 				{
 					printf("----- NO HAY MÁS REINTENTOS -----");
@@ -137,11 +137,11 @@ int utn_getFloat(float *pArray, int len, int attemps, char* msg, char* msgError,
 	{
 		do
 		{
-			printf("%s", msg);
+			printf("%s\n> ", msg);
 			if(myGets(bufferString, len) == 0 && isNumber(bufferString) == 1)
 			{
 				retorno = 0;
-				*pArray = atoi(bufferString);
+				*pArray = atof(bufferString);
 				break;
 			}
 			else
@@ -184,7 +184,7 @@ int utn_sortArrayInt(int* pArray, int len)
 				}
 			}
 		}
-		retorno = -0;
+		retorno = 0;
 	}
 	return retorno;
 }
@@ -204,7 +204,7 @@ int utn_printArrayInt(int* pArray, int len)
 	{
 		for (i = 0;i<len;i++)
 		{
-			printf("[DEBUG] Indice: %d - Valor: %d\n",i,pArray[i]);
+			printf("[DEBUG] Indice: %d\nValor: %d\n",i,pArray[i]);
 		}
 		retorno = 0;
 	}
@@ -216,7 +216,7 @@ int utn_printArrayInt(int* pArray, int len)
  * \param int *pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
  * \return (0) FALSE / (1) TRUE
  */
-static int isString(char* pArray)
+static int isName(char* pArray)
 {
 	int retorno = 1;
 	int i;
@@ -252,7 +252,7 @@ static int isNumber(char* pArray)
 
 	for( ; pArray[i] != '\0' ; i++)
 	{
-		if(pArray[i] > '9' || pArray[i] < '0')
+		if((pArray[i] > '9' || pArray[i] < '0') && pArray[i] != '.')
 		{
 			retorno = 0;
 			break;
@@ -260,4 +260,3 @@ static int isNumber(char* pArray)
 	}
 	return retorno;
 }
-
