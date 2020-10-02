@@ -4,7 +4,7 @@
  Author      : Unía, Ezequiel Matías
  Version     :
  Copyright   :
- Description : Trabajo préctico 2
+ Description : Trabajo práctico 2
  ============================================================================
  */
 

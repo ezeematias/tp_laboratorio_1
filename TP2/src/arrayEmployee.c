@@ -4,7 +4,7 @@
  Author      : Unía, Ezequiel Matías
  Version     :
  Copyright   :
- Description : Trabajo préctico 2
+ Description : Trabajo práctico 2
  ============================================================================
  */
 
@@ -74,10 +74,11 @@ int menuEmployee(Employee* aEmployee)
 			}else{
 				printf("\n-----------------------------------\nXXX| NO HAY EMPLEADOS CARGADOS |XXX\n-----------------------------------\n");
 				attempts--;
-				if(attempts <= 0)
+				if(attempts < 0)
 				{
 					printf("\n-----------------------------------\nXXXXXX| NO HAY MAS INTENTOS |XXXXXX\nXXXXXX|  CERRANDO PROGRAMA  |XXXXXX\n-----------------------------------\n");
 				}
+
 			}
 			break;
 		case 3:
@@ -94,7 +95,7 @@ int menuEmployee(Employee* aEmployee)
 			}else{
 				printf("\n-----------------------------------\nXXX| NO HAY EMPLEADOS CARGADOS |XXX\n-----------------------------------\n");
 				attempts--;
-				if(attempts <= 0)
+				if(attempts < 0)
 				{
 					printf("\n-----------------------------------\nXXXXXX| NO HAY MAS INTENTOS |XXXXXX\nXXXXXX|  CERRANDO PROGRAMA  |XXXXXX\n-----------------------------------\n");
 				}
@@ -107,7 +108,7 @@ int menuEmployee(Employee* aEmployee)
 			}else{
 				printf("\n-----------------------------------\nXXX| NO HAY EMPLEADOS CARGADOS |XXX\n-----------------------------------\n");
 				attempts--;
-				if(attempts <= 0)
+				if(attempts < 0)
 				{
 					printf("\n-----------------------------------\nXXXXXX| NO HAY MAS INTENTOS |XXXXXX\nXXXXXX|  CERRANDO PROGRAMA  |XXXXXX\n-----------------------------------\n");
 				}
@@ -118,13 +119,16 @@ int menuEmployee(Employee* aEmployee)
 			flagContinue = FALSE;
 			break;
 		default:
-			attempts--;
-			if(attempts >= 0)
+
+			if(attempts > 0)
 			{
 				printf("XXXXXXX|  DATO NO VÁLIDO  |XXXXXXXX\n");
+				attempts--;
 			}else
 			{
+				attempts--;
 				printf("\n-----------------------------------\nXXXXXX| NO HAY MAS INTENTOS |XXXXXX\nXXXXXX|  CERRANDO PROGRAMA  |XXXXXX\n-----------------------------------\n");
+				flagContinue = FALSE;
 			}
 			break;
 		}
@@ -509,11 +513,12 @@ static int salaryEmployees(Employee* list, int len)
 		}
 		if(counterEmployees > 0)
 		{
-			printf("\n--------------------------------------------------------------------------------------------");
-			printf("\n|| --[SALARIO TOTAL]-- || ---[SALARIO PROMEDIO]--- || --[EMPLEADOS ARRIBA DEL PROMEDIO]-- ||");
-			printf("\n--------------------------------------------------------------------------------------------");
-			printf("\n||   %15.2f   ||    %18.2f    ||                  %4d               ||",totalSalary,averageSalary,counterEmployeesAverage);
-			printf("\n--------------------------------------------------------------------------------------------\n");
+			printf("\n-----------------------------------------------------------");
+			printf("\n|| - |SALARIO |- || --| SALARIO  |-- || -| ARRIBA DEL |- ||");
+			printf("\n|| - | TOTAL  |- || --| PROMEDIO |-- || -|  PROMEDIO  |- ||");
+			printf("\n-----------------------------------------------------------");
+			printf("\n|| %11.2f   ||  %12.2f    ||           %4d   ||",totalSalary,averageSalary,counterEmployeesAverage);
+			printf("\n-----------------------------------------------------------\n");
 			retorno = 0;
 		}
 	}

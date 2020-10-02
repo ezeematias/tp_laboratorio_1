@@ -3,8 +3,8 @@
  Name        : TP2.c
  Author      : Unía, Ezequiel Matías
  Version     :
- Copyright   : 
- Description : Trabajo préctico 2
+ Copyright   :
+ Description : Trabajo práctico 2
  ============================================================================
  */
 

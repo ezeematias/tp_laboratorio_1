@@ -4,7 +4,7 @@
  Author      : Unía, Ezequiel Matías
  Version     :
  Copyright   :
- Description : Trabajo préctico 2
+ Description : Trabajo práctico 2
  ============================================================================
  */
 
@@ -16,12 +16,13 @@
 
 static int myGets(char* pArray, int len);
 static int isNumber(char* pArray);
+static int isNumberFloat(char* pArray);
 static int isName(char* pArray);
 
 /**
- * \brief Lee los datos ingresados por consola y graba en un array.
- * \param int *pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
- * \param int len, La longitud del array.
+ * \brief Read the data entered by the console and write to an array..
+ * \param int *pArray, Pointer to the memory space where the obtained value will be left.
+ * \param int len, The length of the array.
  * \return (-1) Error / (0) Ok
  */
 static int myGets(char* pArray, int len)
@@ -40,14 +41,14 @@ static int myGets(char* pArray, int len)
 }
 
 /**
- * \brief Se pide por consola un número entero al usuario.
- * \param int *pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
- * \param int len, La longitud del array.
- * \param int attemps, Los reintentos que se le darán al usuario.
- * \param char* msg, Mensaje que se le muestra al usuario.
- * \param char* msgError, Mensaje de ERROR que se le muestra al usuario..
- * \param int max, Número máximo permitido.
- * \param int min, Número minimo permitido.
+ * \brief The console prompts the user for an integer number.
+ * \param int *pArray, Pointer to the memory space where the obtained value will be left.
+ * \param int len, The length of the array.
+ * \param int attempts, The retries that will be given to the user.
+ * \param char* msg, Message displayed to the user.
+ * \param char* msgError, Message ERROR displayed to the user.
+ * \param int max, Max number allowed.
+ * \param int min, Min number allowed.
  * \return (-1) Error / (0) Ok
  */
 int utn_getInt(int *pArray, int len, int attempts, char* msg, char* msgError, int max, int min)
@@ -85,12 +86,12 @@ int utn_getInt(int *pArray, int len, int attempts, char* msg, char* msgError, in
 }
 
 /**
- * \brief Solicita un caracter al usuario
- * \param char* pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
- * \param int len, La longitud del array.
- * \param char* msg, Es el mensaje a ser mostrado al usuario.
- * \param char* msgError, Es el mensaje de error a ser mostrado al usuario
- * \param int attemps, cantidad de oportunidades para ingresar el dato.
+ * \brief The user is asked for the name.
+ * \param int *pArray, Pointer to the memory space where the obtained value will be left.
+ * \param int len, The length of the array.
+ * \param char* msg, Message displayed to the user.
+ * \param char* msgError, Message ERROR displayed to the user.
+ * \param int attempts, The retries that will be given to the user.
  * \return (-1) Error / (0) Ok
  */
 int utn_getChar (char* pArray, int len, char* msg, char* msgError, int attempts)
@@ -123,14 +124,14 @@ int utn_getChar (char* pArray, int len, char* msg, char* msgError, int attempts)
 }
 
 /**
- * \brief Se pide por consola un número flotante al usuario.
- * \param int *pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
- * \param int len, La longitud del array.
- * \param int attemps, Los reintentos que se le darán al usuario.
- * \param char* msg, Mensaje que se le muestra al usuario.
- * \param char* msgError, Mensaje de ERROR que se le muestra al usuario.
- * \param int max, Número máximo permitido.
- * \param int min, Número minimo permitido.
+ * \brief The user is prompted for a floating number by console.
+ * \param int *pArray, Pointer to the memory space where the obtained value will be left.
+ * \param int len, The length of the array.
+ * \param int attempts, The retries that will be given to the user.
+ * \param char* msg, Message displayed to the user.
+ * \param char* msgError, Message ERROR displayed to the user.
+ * \param int max, Max number allowed.
+ * \param int min, Min number allowed.
  * \return (-1) Error / (0) Ok
  */
 int utn_getFloat(float *pArray, int len, int attempts, char* msg, char* msgError, int max, int min)
@@ -144,42 +145,35 @@ int utn_getFloat(float *pArray, int len, int attempts, char* msg, char* msgError
 		do
 		{
 			printf("%s\n> ", msg);
-			if(myGets(bufferString, len) == 0 && isNumber(bufferString) == 1)
+			if(myGets(bufferString, len) == 0 && isNumberFloat(bufferString) == 1)
 			{
 				bufferFloat = atof(bufferString);
 				if(bufferFloat >= min && bufferFloat <= max)
 				{
 					*pArray = bufferFloat;
 					retorno = 0;
-				}else
-				{
-					if (attempts > 0)
-					{
-						printf("%s\n", msgError);
-					}else if(attempts < 0)
-					{
-						printf("----- [NO HAY MÁS REINTENTOS] -----\n");
-					}
+					break;
 				}
-				break;
-			}else if (attempts > 0)
+			}
+			if (attempts > 0)
 			{
 				attempts--;
 				printf("%s\n", msgError);
 			}else
 			{
+				attempts--;
 				printf("----- [NO HAY MÁS REINTENTOS] -----\n");
-				break;
 			}
+
 		}while(attempts >= 0);
 	}
 	return retorno;
 }
 
 /**
- * \brief Ordena una array de números enteros
- * \param int *pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
- * \param int len, La longitud del array.
+ * \brief Sort an array of integers.
+ * \param int *pArray, Pointer to the memory space where the obtained value will be left.
+ * \param int len, The length of the array.
  * \return (-1) Error / (0) Ok
  */
 int utn_sortArrayInt(int* pArray, int len)
@@ -211,9 +205,9 @@ int utn_sortArrayInt(int* pArray, int len)
 }
 
 /**
- * \brief Imprime un array de números enteros.
- * \param int *pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
- * \param int len, La longitud del array.
+ * \brief Print an array of integers.
+ * \param int *pArray, Pointer to the memory space where the obtained value will be left.
+ * \param int len, The length of the array.
  * \return (-1) Error / (0) Ok
  */
 int utn_printArrayInt(int* pArray, int len)
@@ -233,8 +227,8 @@ int utn_printArrayInt(int* pArray, int len)
 }
 
 /**
- * \brief Verifica que el array sea solamente de letras.
- * \param int *pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
+ * \brief Verify that the array is only letters.
+ * \param int *pArray, Pointer to the memory space where the obtained value will be left.
  * \return (0) FALSE / (1) TRUE
  */
 static int isName(char* pArray)
@@ -257,11 +251,11 @@ static int isName(char* pArray)
 }
 
 /**
- * \brief Verifica que el array sea solamente números.
- * \param int *pArray, Puntero al espacio de memoria donde se dejara el valor obtenido.
+ * \brief Verify that the array is only numbers..
+ * \param int *pArray, Pointer to the memory space where the obtained value will be left.
  * \return (0) FALSE / (1) TRUE
  */
-static int isNumber(char* pArray)
+static int isNumberFloat(char* pArray)
 {
 	int retorno = 1;
 	int i = 0;
@@ -277,6 +271,30 @@ static int isNumber(char* pArray)
 			counterDot++;
 		}
 		if((counterDot > 1) || ((pArray[i] > '9' || pArray[i] < '0') && pArray[i] != '.'))
+		{
+			retorno = 0;
+			break;
+		}
+	}
+	return retorno;
+
+}/**
+ * \brief Verify that the array is only numbers..
+ * \param int *pArray, Pointer to the memory space where the obtained value will be left.
+ * \return (0) FALSE / (1) TRUE
+ */
+static int isNumber(char* pArray)
+{
+	int retorno = 1;
+	int i = 0;
+	if(pArray[0] == '-')
+	{
+		i = 1;
+	}
+	for( ; pArray[i] != '\0' ; i++)
+	{
+
+		if(pArray[i] > '9' || pArray[i] < '0')
 		{
 			retorno = 0;
 			break;
