@@ -30,7 +30,7 @@ static int myGets(char* pArray, int len)
 	if (pArray != NULL && len > 0 && fgets(pArray, len, stdin))
 	{
 		fflush(stdin);
-		if (pArray[strlen(pArray) - 1] == '\n')
+		if (pArray[strlen(pArray) - 1] == '\n' && pArray[0] != '\n')
 		{
 			pArray[strlen(pArray) - 1] = '\0';
 		}
@@ -54,7 +54,7 @@ int utn_getInt(int *pArray, int len, int attempts, char* msg, char* msgError, in
 {
 	int retorno = -1;
 	char bufferString[len];
-
+	int bufferInt;
 	if(msg != NULL && msgError != NULL && pArray != NULL && attempts >= 0 && max >= min)
 	{
 		do
@@ -62,16 +62,23 @@ int utn_getInt(int *pArray, int len, int attempts, char* msg, char* msgError, in
 			printf("%s\n> ", msg);
 			if(myGets(bufferString, len) == 0 && isNumber(bufferString) == 1)
 			{
-				retorno = 0;
-				*pArray = atoi(bufferString);
-				break;
+				bufferInt = atoi(bufferString);
+				if(bufferInt >= min && bufferInt <= max)
+				{
+					*pArray = bufferInt;
+					retorno = 0;
+					break;
+				}
 			}
-			else
+			if (attempts > 0)
 			{
-				printf("%s", msgError);
 				attempts--;
+				printf("%s\n", msgError);
+			}else
+			{
+				attempts--;
+				printf("----- [NO HAY MÁS REINTENTOS] -----\n");
 			}
-
 		}while(attempts >= 0);
 	}
 	return retorno;
@@ -86,14 +93,14 @@ int utn_getInt(int *pArray, int len, int attempts, char* msg, char* msgError, in
  * \param int attemps, cantidad de oportunidades para ingresar el dato.
  * \return (-1) Error / (0) Ok
  */
-int utn_getChar (char* pArray, int len, char* msg, char* msgError, int attemps)
+int utn_getChar (char* pArray, int len, char* msg, char* msgError, int attempts)
 {
 	int retorno = -1;
 	char bufferString[len];
 
-	if(pArray != NULL && msg != NULL && msgError != NULL && attemps >= 0)
+	if(pArray != NULL && msg != NULL && msgError != NULL && attempts >= 0)
 	{
-		while (attemps >= 0)
+		do
 		{
 			printf("%s\n> ", msg);
 			if(myGets(bufferString, len) == 0 && isName(bufferString) == 1)
@@ -101,18 +108,16 @@ int utn_getChar (char* pArray, int len, char* msg, char* msgError, int attemps)
 				strncpy(pArray, bufferString, len);
 				retorno = 0;
 				break;
+			}else if (attempts > 0)
+			{
+				attempts--;
+				printf("%s\n", msgError);
 			}else
 			{
-				attemps--;
-				if (attemps > 0)
-				{
-					printf("%s\n", msgError);
-				}else if(attemps < 0)
-				{
-					printf("----- NO HAY MÁS REINTENTOS -----");
-				}
+				printf("----- [NO HAY MÁS REINTENTOS] -----\n");
+				break;
 			}
-		}
+		}while (attempts >= 0);
 	}
 	return retorno;
 }
@@ -128,29 +133,45 @@ int utn_getChar (char* pArray, int len, char* msg, char* msgError, int attemps)
  * \param int min, Número minimo permitido.
  * \return (-1) Error / (0) Ok
  */
-int utn_getFloat(float *pArray, int len, int attemps, char* msg, char* msgError, int max, int min)
+int utn_getFloat(float *pArray, int len, int attempts, char* msg, char* msgError, int max, int min)
 {
 	int retorno = -1;
 	char bufferString[len];
+	float bufferFloat;
 
-	if(msg != NULL && msgError != NULL && pArray != NULL && attemps >= 0 && max >= min)
+	if(msg != NULL && msgError != NULL && pArray != NULL && attempts >= 0 && max >= min)
 	{
 		do
 		{
 			printf("%s\n> ", msg);
 			if(myGets(bufferString, len) == 0 && isNumber(bufferString) == 1)
 			{
-				retorno = 0;
-				*pArray = atof(bufferString);
+				bufferFloat = atof(bufferString);
+				if(bufferFloat >= min && bufferFloat <= max)
+				{
+					*pArray = bufferFloat;
+					retorno = 0;
+				}else
+				{
+					if (attempts > 0)
+					{
+						printf("%s\n", msgError);
+					}else if(attempts < 0)
+					{
+						printf("----- [NO HAY MÁS REINTENTOS] -----\n");
+					}
+				}
+				break;
+			}else if (attempts > 0)
+			{
+				attempts--;
+				printf("%s\n", msgError);
+			}else
+			{
+				printf("----- [NO HAY MÁS REINTENTOS] -----\n");
 				break;
 			}
-			else
-			{
-				printf("%s", msgError);
-				attemps--;
-			}
-
-		}while(attemps >= 0);
+		}while(attempts >= 0);
 	}
 	return retorno;
 }
@@ -244,15 +265,18 @@ static int isNumber(char* pArray)
 {
 	int retorno = 1;
 	int i = 0;
-
+	int counterDot = 0;
 	if(pArray[0] == '-')
 	{
 		i = 1;
 	}
-
 	for( ; pArray[i] != '\0' ; i++)
 	{
-		if((pArray[i] > '9' || pArray[i] < '0') && pArray[i] != '.')
+		if(pArray[i] == '.')
+		{
+			counterDot++;
+		}
+		if((counterDot > 1) || ((pArray[i] > '9' || pArray[i] < '0') && pArray[i] != '.'))
 		{
 			retorno = 0;
 			break;

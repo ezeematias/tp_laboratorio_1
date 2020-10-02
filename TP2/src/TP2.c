@@ -10,11 +10,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "employee.h"
+#include "arrayEmployee.h"
 #include "utn.h"
 
 int main(void) {
 	setbuf(stdout, NULL);
-	employee_start ();
+	Employee listEmployee[LONG_EMPLOYEE];
+	menuEmployee(listEmployee);
 	return EXIT_SUCCESS;
 }

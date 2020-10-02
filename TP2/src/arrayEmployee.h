@@ -8,8 +8,8 @@
  ============================================================================
  */
 
-#ifndef EMPLOYEE_H_
-#define EMPLOYEE_H_
+#ifndef ARRAYEMPLOYEE_H_
+#define ARRAYEMPLOYEE_H_
 #define TRUE 1
 #define FALSE 0
 #define LONG_NAME 51
@@ -26,6 +26,6 @@ struct
  int isEmpty;
 }typedef Employee;
 
-int employee_start (void);
+int menuEmployee(Employee* aEmployee);
 
-#endif /* EMPLOYEE_H_ */
+#endif /* ARRAYEMPLOYEE_H_ */
