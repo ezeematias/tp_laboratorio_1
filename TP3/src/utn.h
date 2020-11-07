@@ -15,6 +15,7 @@
 #define NO_MORE_ATTEMPTS "\n---[ NO HAY MÁS REINTENTOS ]-----------------------------------------------\n"
 #define MSG_OPTION_MENU  "\n---[ SELECCIONE UNA OPCIÓN ]-----------------------------------------------\n[1] -> CARGAR DATOS EN MODO TEXTO\n[2] -> CARGAR DATOS EN MODO BINARIO\n[3] -> ALTA DE EMPLEADO\n[4] -> MODIFICAR EMPLEADO\n[5] -> BAJA DE EMPLEADO\n[6] -> LISTAR EMPLEADOS\n[7] -> ORDENAR EMPLEADOS\n[8] -> GUARDAR DATOS EN MODO TEXTO\n[9] -> GUARDAR DATOS EN MODO BINARIO\n[0] -> SALIR\n\n[OPCIÓN SELECCIONADA]"
 #define MSG_OPTION_REMOVE  "\n---[ CONFIRMAR ELIMINACIÓN ]-----------------------------------------------\n[1] -> SI\n[2] -> NO\n\n[OPCIÓN SELECCIONADA]"
+#define MSG_OPTION_SAVE  "\n---------------------------------------------------------------------------\n-----------[ NO SE GUARDARON LOS CAMBIOS, ¿DESEA GUARDARLOS? ]-------------\n---------------------------------------------------------------------------\n[1] -> SI\n[0] -> NO\n\n[OPCIÓN SELECCIONADA]"
 #define MSG_OPTION_SORT  "\n---[ SELECCIONE UNA OPCIÓN ]-----------------------------------------------\n[1] -> ASCENDENTE [A-Z]\n[0] -> DESCENDENTE [Z-A]\n\n[OPCIÓN SELECCIONADA]"
 #define MSG_OPTION_ERROR "\n---[ |XXX| ERROR |XXX| ]---------------------------------------------------\n"
 

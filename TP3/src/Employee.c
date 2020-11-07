@@ -17,12 +17,24 @@
 #include "parser.h"
 #include "utn.h"
 
-
+/** \brief Search and create a memory space
+ *
+ *  \return pointer to dynamic memory.
+ */
 Employee* employee_new()
 {
 	return (Employee*)malloc(sizeof(Employee));
 }
 
+/** \brief New Employee whith parameters text.
+ *
+ * \param char* idStr, Get ID
+ * \param char* nombreStr, Get Name
+ * \param char* horasTrabajadasStr, Get Hours
+ * \param char* sueldo, Get Salary.
+ * \return int Return (NULL) if Error [Invalid length or NULL pointer] - (Employee*) if Ok
+ *
+ */
 Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajadasStr,char* sueldo)
 {
 	Employee* this = employee_new();
@@ -34,6 +46,15 @@ Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajad
 	return NULL;
 }
 
+/** \brief New Employee whith parameters.
+ *
+ * \param char* idStr, Get ID
+ * \param char* nombreStr, Get Name
+ * \param char* horasTrabajadasStr, Get Hours
+ * \param char* sueldo, Get Salary.
+ * \return int Return (NULL) if Error [Invalid length or NULL pointer] - (Employee*) if Ok
+ *
+ */
 Employee* employee_newWithParameters(int id, char* name, int workedHours, float salary)
 {
     Employee* this = employee_new();
@@ -51,10 +72,10 @@ Employee* employee_newWithParameters(int id, char* name, int workedHours, float 
 	return NULL;
 }
 
-/** \brief New ID.
- * Generates a new identity number.
- * \param (void)
- * \return int Return (ID), NewID.
+/** \brief New ID. Read the ID from a text file
+ *
+ * \param char* path, File path
+ * \return int Return (ID+1), NewID.
  *
  */
 int employee_newId(char* path)
@@ -73,9 +94,10 @@ int employee_newId(char* path)
 	return id+1;
 }
 
-/** \brief Save ID.
- * Save a new identity number.
- * \param (void)
+/** \brief Save ID. Save a new identity number.
+ *
+ * \param char* path, File path
+ * \param char* id, Get ID.
  * \return int Return (ID), NewID.
  *
  */
@@ -97,14 +119,12 @@ int employee_saveId(char* path, int id)
     return retorno;
 }
 
-/** \brief New Employee.
- * This function looks for a space in the structure which is empty to be able to data.
+/** \brief New Employee. This function looks for a space in the structure which is empty to be able to data.
+ *
  * \param list Employee* Pointer to array of employees
- * \param len int Array length
- * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ * \return int Return (NULL) if Error [Invalid length or NULL pointer] - (Employee*) if Ok
  *
  */
-
 Employee* employee_add(void)
 {
 	Employee bufferArrray;
@@ -122,6 +142,11 @@ Employee* employee_add(void)
 	return bufferEmployee;
 }
 
+/* \brief prints emplyee data
+ *
+ * \param Employee* this: pointer to employee
+ * \return [-1] if error / [0] if ok
+ */
 int employee_print(Employee* this)
 {
     int retorno=-1;
@@ -143,25 +168,23 @@ int employee_print(Employee* this)
     return retorno;
 }
 
-int employee_initEmployee(Employee* list[], int len)
-{
-	int retorno = -1;
-	if (list != NULL && len > 0)
-	{
-		for(int i=0;i<len;i++)
-		{
-			list[i] = NULL;
-		}
-		retorno = 0;
-	}
-	return retorno;
-}
-
+/** \brief Delete a memory space
+ *
+ * \param Employee* this: pointer to employee
+ *  \return (void)
+ */
 void employee_delete(Employee* this)
 {
 	free(this);
 }
 
+/** \brief Returns what is in the structure in the ID field.
+ *
+ * \param Employee* this: pointer to employee
+ * \param char* id, Get ID.
+ * \return int Return (ID) / [-1] if error.
+ *
+ */
 int employee_getId(Employee* this,int* id)
 {
 	int retorno = -1;
@@ -173,6 +196,13 @@ int employee_getId(Employee* this,int* id)
 	return retorno;
 }
 
+/** \brief Returns what is in the structure in the Name field.
+ *
+ * \param Employee* this: pointer to employee
+ * \param char* nombre, Get Name.
+ * \return [-1] if error / [0] if ok
+ *
+ */
 int employee_getNombre(Employee* this,char* nombre)
 {
 	int retorno = -1;
@@ -184,6 +214,13 @@ int employee_getNombre(Employee* this,char* nombre)
 	return retorno;
 }
 
+/** \brief Returns what is in the structure in the hours field.
+ *
+ * \param Employee* this: pointer to employee
+ * \param char* horasTrabajadas, Get hours.
+ * \return [-1] if error / [0] if ok
+ *
+ */
 int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
 {
 	int retorno = -1;
@@ -195,6 +232,13 @@ int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
 	return retorno;
 }
 
+/** \brief Returns what is in the structure in the salary field.
+ *
+ * \param Employee* this: pointer to employee
+ * \param float* sueldo, Get salary.
+ * \return [-1] if error / [0] if ok
+ *
+ */
 int employee_getSueldo(Employee* this,float* sueldo)
 {
 	int retorno = -1;
@@ -206,6 +250,11 @@ int employee_getSueldo(Employee* this,float* sueldo)
 	return retorno;
 }
 
+/** \brief Verify that the array is only letters.
+ *
+ * \param char* nombre, Pointer to the memory space where the obtained value will be left.
+ * \return (0) FALSE / (1) TRUE
+ */
 int isValidNombre(char* nombre)
 {
 	int retorno = 1;
@@ -225,6 +274,7 @@ int isValidNombre(char* nombre)
 	return retorno;
 }
 
+
 int employee_setId(Employee* this, int id)
 {
 	int retorno = -1;
@@ -236,6 +286,12 @@ int employee_setId(Employee* this, int id)
 	return retorno;
 }
 
+/** \brief Load the name in the employee field and validate that the data is correct
+ *
+ * \param Employee* this: pointer to employee
+ * \param char* nombre: pointer of the name to be set to an employee
+ * \return [-1] if error / [0] if ok
+ */
 int employee_setNombre(Employee* this, char* nombre)
 {
 	int retorno = -1;
@@ -247,6 +303,12 @@ int employee_setNombre(Employee* this, char* nombre)
 	return retorno;
 }
 
+/** \brief Load the hours in the employee field and validate that the data is correct
+ *
+ * \param Employee* this: pointer to employee
+ * \param char* horasTrabajadas: pointer of the hours to be set to an employee
+ * \return [-1] if error / [0] if ok
+ */
 int employee_setHorasTrabajadas(Employee* this, int horasTrabajadas)
 {
 	int retorno = -1;
@@ -258,6 +320,12 @@ int employee_setHorasTrabajadas(Employee* this, int horasTrabajadas)
 	return retorno;
 }
 
+/** \brief Load the hours in the employee field and validate that the data is correct
+ *
+ * \param Employee* this: pointer to employee
+ * \param float sueldo: pointer of the salary to be set to an employee
+ * \return [-1] if error / [0] if ok
+ */
 int employee_setSueldo(Employee* this, float sueldo)
 {
 	int retorno = -1;
@@ -269,6 +337,12 @@ int employee_setSueldo(Employee* this, float sueldo)
 	return retorno;
 }
 
+/** \brief Compares two names and returns a value indicating their order
+ *
+ * \param void *thisA: Name number one.
+ * \param void *thisB: Name number two.
+ * \return [-2] if error / [1] if is ascending. / [-1] If is descending. / [0] If is equal
+ */
 int employee_compareName(void *thisA, void *thisB)
 {
     int retorno = -2;

@@ -14,12 +14,11 @@
 #include "LinkedList.h"
 #include "Employee.h"
 
-/** \brief Parsea los datos los datos de los empleados desde el archivo data.csv (modo texto).
+/** \brief Parser employee data from data.csv file (text mode).
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+ *  \param FILE* pFile, File path
+ *  \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ *  \return int (-1) if ERROR (0) if OK
  */
 int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 {
@@ -46,12 +45,11 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
     return retorno;
 }
 
-/** \brief Parsea los datos los datos de los empleados desde el archivo data.csv (modo binario).
+/** \brief Parser employee data from data.bin file (binary mode).
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+ *  \param FILE* pFile, File path
+ *  \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ *  \return int (-1) if ERROR (0) if OK
  */
 int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 {
@@ -77,11 +75,10 @@ int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
     return retorno;
 }
 
-/** \brief Parsea los datos los datos de los empleados desde el archivo data.csv (modo texto).
+/** \brief Parser ID data from data.csv file (text mode).
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
+ * \param FILE* pFile, File path
+ * \return int (-1) if ERROR (0) if OK
  *
  */
 int parser_EmployeeId(FILE* pFile)

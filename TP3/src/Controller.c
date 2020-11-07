@@ -18,12 +18,11 @@
 #include "parser.h"
 #include "utn.h"
 
-/** \brief Carga los datos de los empleados desde el archivo data.csv (modo texto).
+/** \brief Loads employee data from data.csv file (binary mode).
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+ *  \param char* path, File path
+ *  \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ *  \return int (-1) if ERROR (0) if OK
  */
 int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 {
@@ -41,12 +40,11 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 	return retorno;
 }
 
-/** \brief Carga los datos de los empleados desde el archivo data.csv (modo binario).
+/** \brief Loads employee data from data.bin file (binary mode).
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+ *  \param char* path, File path
+ *  \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ *  \return int (-1) if ERROR (0) if OK
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 {
@@ -63,10 +61,9 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 	return retorno;
 }
 
-/** \brief Alta de empleados
+/** \brief Add employee
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
+ * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
  * \return int
  *
  */
@@ -81,11 +78,12 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 	return retorno;
 }
 
-/** \brief Alta de empleados
+/** \brief Find Employee
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
+ * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ * \return int, Get the ID
+ * \return int*, Returns the index by pointer
+ * \return int (-1) if ERROR (0) if OK *
  *
  */
 int controller_findById(LinkedList* pArrayListEmployee, int id, int* index)
@@ -99,7 +97,7 @@ int controller_findById(LinkedList* pArrayListEmployee, int id, int* index)
     	for(int i=1;i<len;i++)
     	{
     		bufferEmployee = ll_get(pArrayListEmployee, i);
-    		if(!employee_getId(bufferEmployee, &bufferId) &&  bufferId == id)
+    		if(bufferEmployee != NULL && !employee_getId(bufferEmployee, &bufferId) &&  bufferId == id)
     		{
     			*index = i;
     			retorno = 0;
@@ -111,11 +109,10 @@ int controller_findById(LinkedList* pArrayListEmployee, int id, int* index)
 }
 
 
-/** \brief Modificar datos de empleado
+/** \brief Modify employee specific
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
+ * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ * \return int (-1) if ERROR (0) if OK *
  *
  */
 int controller_editEmployee(LinkedList* pArrayListEmployee)
@@ -136,14 +133,13 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 		{
 			if(utn_getInt(&bufferId, 50, 2, MSG_ID, MSG_OPTION_ERROR, 2000, 0)==0)
 			{
-				controller_findById(pArrayListEmployee, bufferId, &bufferIndex);
-				if(bufferIndex >= 0)
+				if(!controller_findById(pArrayListEmployee, bufferId, &bufferIndex))
 				{
 					do
 					{
+						bufferEmployee = ll_get(pArrayListEmployee, bufferIndex);
 						printf(MSG_PRINT_EMPLOYEE);
-			            bufferEmployee = ll_get(pArrayListEmployee, bufferIndex);
-			            employee_print(bufferEmployee);
+						employee_print(bufferEmployee);
 						printf(MSG_PRINT_OUT);
 						if(utn_getInt(&option, 2, 2, MSG_OPTION_MODIFY, MSG_OPTION_ERROR, 3, 0)==0)
 						{
@@ -190,34 +186,29 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 								flagContinue = FALSE;
 								break;
 							}
-
 						}else
 						{
 							attempts--;
 						}
-					}while(attempts >= 0 && flagContinue == TRUE && retorno == 0);
+						}while(attempts >= 0 && flagContinue == TRUE && retorno == 0);
 				}else
 				{
-					//printf(MSG_ID_FAIL);
+					printf(MSG_ID_FAIL);
 					attempts--;
 				}
 			}else
 			{
-				//printf(MSG_ID_FAILATTE);
 				flagContinue = FALSE;
 			}
 		}while(flagContinue == TRUE && attempts >= 0 && retorno -1);
-
-    	retorno = 0;
     }
 	return retorno;
 }
 
-/** \brief Baja de empleado
+/** \brief Remove employee
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
+ * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ * \return int (-1) if ERROR (0) if OK
  *
  */
 int controller_removeEmployee(LinkedList* pArrayListEmployee)
@@ -227,33 +218,46 @@ int controller_removeEmployee(LinkedList* pArrayListEmployee)
 	int bufferIndex;
 	int bufferId;
 	int option;
-	if(pArrayListEmployee != NULL && utn_getInt(&bufferId, 50, 2, MSG_ID, MSG_OPTION_ERROR, 2000, 0)==0)
+	int attempts = 2;
+	if(pArrayListEmployee != NULL)
 	{
-		controller_findById(pArrayListEmployee, bufferId, &bufferIndex);
-		bufferEmployee = ll_get(pArrayListEmployee, bufferIndex);
-		printf(MSG_PRINT_EMPLOYEE);
-		employee_print(bufferEmployee);
-		printf(MSG_PRINT_OUT);
-		if((utn_getInt(&option, 50, 2, MSG_OPTION_REMOVE, MSG_OPTION_ERROR, 2, 0)==0) && option == 1)
+		do
 		{
-			ll_remove(pArrayListEmployee, bufferIndex);
-			printf(MSG_REMOVE_OK);
-			retorno = 0;
-		}else if(option == 0)
-		{
-			printf(MSG_REMOVE_FAIL);
-			retorno = 0;
-		}
+			if(utn_getInt(&bufferId, 50, 2, MSG_ID, MSG_OPTION_ERROR, 2000, 0)==0)
+			{
+				if(!controller_findById(pArrayListEmployee, bufferId, &bufferIndex))
+				{
+					bufferEmployee = ll_get(pArrayListEmployee, bufferIndex);
+					if(bufferEmployee != NULL)
+					{
+						printf(MSG_PRINT_EMPLOYEE);
+						employee_print(bufferEmployee);
+						printf(MSG_PRINT_OUT);
+						if((utn_getInt(&option, 50, 2, MSG_OPTION_REMOVE, MSG_OPTION_ERROR, 2, 1)==0) && option == 1)
+						{
+							ll_remove(pArrayListEmployee, bufferIndex);
+							employee_delete(bufferEmployee);
+							retorno = 0;
+						}else
+						{
+							break;
+						}
+					}
+				}else
+				{
+					printf(MSG_ID_FAIL);
+					attempts--;
+				}
+			}
+		}while(attempts >= 0 && retorno == -1);
 	}
 	return retorno;
-	return 1;
 }
 
-/** \brief Listar empleados
+/** \brief Prints employee's list
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
+ * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ * \return int (-1) if ERROR (0) if OK
  *
  */
 int controller_ListEmployee(LinkedList* pArrayListEmployee)
@@ -275,11 +279,10 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
     return retornar;
 }
 
-/** \brief Ordenar empleados
+/** \brief Sort employee's list
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
+ * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ * \return int (-1) if ERROR (0) if OK
  *
  */
 int controller_sortEmployee(LinkedList* pArrayListEmployee)
@@ -293,12 +296,11 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
     return retorno;
 }
 
-/** \brief Guarda los datos de los empleados en el archivo data.csv (modo texto).
+/** \brief Save employee data in the file data.csv (text mode)
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+ *  \param char* path, File path
+ *  \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ *  \return int (-1) if ERROR (0) if OK
  */
 int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 {
@@ -334,12 +336,11 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
     return retorno;
 }
 
-/** \brief Guarda los datos de los empleados en el archivo data.csv (modo binario).
+/** \brief Save employee data in the file data.bin (binary mode)
  *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+ *  \param char* path, File path
+ *  \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ *  \return int (-1) if ERROR (0) if OK
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 {
@@ -362,4 +363,3 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
     fclose(pFile);
     return retorno;
 }
-

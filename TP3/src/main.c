@@ -32,8 +32,13 @@
 int main()
 {
 	setbuf(stdout, NULL);
-    int option = 0;
+    int option;
     int attempts = 2;
+    int flagLoad = FALSE;
+    int flagSaveText = FALSE;
+    int flagSaveBin = FALSE;
+    int flagModify = FALSE;
+
     LinkedList* listaEmpleados = ll_newLinkedList();
     printf(MSG_START);
     do{
@@ -41,39 +46,139 @@ int main()
         switch(option)
         {
             case 1:
-                controller_loadFromText("data.csv",listaEmpleados);
+                if(flagLoad == FALSE && !controller_loadFromText("data.csv",listaEmpleados))
+                {
+                	flagLoad = TRUE;
+                	printf(MSG_LOAD_OK);
+                }else
+                {
+                	printf(MSG_LOAD_FAIL);
+                }
                 break;
             case 2:
-                controller_loadFromBinary("data.bin",listaEmpleados);
+                if(flagLoad == FALSE && !controller_loadFromBinary("data.bin",listaEmpleados))
+                {
+                	flagLoad = TRUE;
+                	printf(MSG_LOAD_OK);
+                }else
+                {
+                	printf(MSG_LOAD_FAIL);
+                }
                 break;
             case 3:
-            	controller_addEmployee(listaEmpleados);
+            	if(flagLoad == TRUE && !controller_addEmployee(listaEmpleados))
+                {
+            		flagModify = TRUE;
+                	printf(MSG_ADD_OK);
+                }else if (flagLoad == FALSE)
+                {
+                	printf(MSG_FLAGLOAD_FAIL);
+                }else
+                {
+                	printf(MSG_ADD_FAIL);
+                }
                 break;
             case 4:
-                controller_editEmployee(listaEmpleados);
+                if(flagLoad == TRUE && !controller_editEmployee(listaEmpleados))
+                {
+            		flagModify = TRUE;
+                	printf(MSG_EDIT_OK);
+                }else if (flagLoad == FALSE)
+                {
+                	printf(MSG_FLAGLOAD_FAIL);
+                }else
+                {
+                	printf(MSG_EDIT_FAIL);
+                }
                 break;
             case 5:
-                controller_removeEmployee(listaEmpleados);
+                if(flagLoad == TRUE && !controller_removeEmployee(listaEmpleados))
+                {
+            		flagModify = TRUE;
+                	printf(MSG_REMOVE_OK);
+                }else if (flagLoad == FALSE)
+                {
+                	printf(MSG_FLAGLOAD_FAIL);
+                }else
+                {
+                	printf(MSG_REMOVE_FAIL);
+                }
                 break;
             case 6:
-                controller_ListEmployee(listaEmpleados);
+                if(flagLoad == TRUE && !controller_ListEmployee(listaEmpleados))
+                {
+                	printf(MSG_LIST_OK);
+                }else if (flagLoad == FALSE)
+                {
+                	printf(MSG_FLAGLOAD_FAIL);
+                }else
+                {
+                	printf(MSG_LIST_FAIL);
+                }
                 break;
             case 7:
-                controller_sortEmployee(listaEmpleados);
+                if(flagLoad == TRUE && !controller_sortEmployee(listaEmpleados))
+                {
+            		flagModify = TRUE;
+                	printf(MSG_SORT_OK);
+                }else if (flagLoad == FALSE)
+                {
+                	printf(MSG_FLAGLOAD_FAIL);
+                }else
+                {
+                	printf(MSG_SORT_FAIL);
+                }
                 break;
             case 8:
-                controller_saveAsText("data.csv",listaEmpleados);
+                if(flagLoad == TRUE && !controller_saveAsText("data.csv",listaEmpleados))
+                {
+                	flagSaveText = TRUE;
+                	printf(MSG_SAVE_OK);
+                }else if (flagLoad == FALSE)
+                {
+                	printf(MSG_FLAGLOAD_FAIL);
+                }else
+                {
+                	printf(MSG_SAVE_FAIL);
+                }
                 break;
             case 9:
-                controller_saveAsBinary("data.bin",listaEmpleados);
+                if(flagLoad == TRUE && !controller_saveAsBinary("data.bin",listaEmpleados))
+                {
+                	flagSaveBin = TRUE;
+                	printf(MSG_SAVE_OK);
+                }else if (flagLoad == FALSE)
+                {
+                	printf(MSG_FLAGLOAD_FAIL);
+                }else
+                {
+                	printf(MSG_SAVE_FAIL);
+                }
                 break;
             case 0:
-            	printf(MSG_OFF);
-            	ll_deleteLinkedList(listaEmpleados);
+            	if(flagModify == FALSE)
+            	{
+					option = 10;
+            	}else if (flagSaveBin == FALSE && flagSaveText == FALSE && !utn_getInt(&option, 3, attempts, MSG_OPTION_SAVE,MSG_OPTION_ERROR, 1, 0))
+            	{
+                    if(option == 1 && !controller_saveAsBinary("data.bin",listaEmpleados) && !controller_saveAsText("data.csv",listaEmpleados))
+                    {
+                    	printf(MSG_SAVE_OK);
+                    	option = 10;
+                    }else if (option == 0)
+                    {
+                    	option = 10;
+                    }else
+					{
+						printf(MSG_SAVE_FAIL);
+					}
+            	}
+
                 break;
         }
-    }while(option != 0);
-
+    }while(option != 10);
+	printf(MSG_OFF);
+	ll_deleteLinkedList(listaEmpleados);
     return 0;
 }
 
