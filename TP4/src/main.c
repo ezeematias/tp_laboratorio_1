@@ -42,7 +42,7 @@ int main(void)
 	startTesting(12); // ll_isEmpty
 	startTesting(13); // ll_push
 	startTesting(14); // ll_pop
-	//startTesting(15); // ll_contains
+	startTesting(15); // ll_contains
 	//startTesting(16); // ll_containsAll
 	//startTesting(17); // ll_subList
 	//startTesting(18); // ll_clone

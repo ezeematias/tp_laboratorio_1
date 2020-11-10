@@ -397,8 +397,23 @@ void* ll_pop(LinkedList* this,int index)
 */
 int ll_contains(LinkedList* this, void* pElement)
 {
-    int returnAux = -1;
-
+    int returnAux = 0;
+    Node* nodeReturn = NULL;
+	int len = ll_len(this);
+    if(this != NULL)
+    {
+    	for(int i=0; i < len; i++)
+    	{
+			nodeReturn = getNode(this, i);
+			if(nodeReturn != NULL && nodeReturn->pElement == pElement)
+			{
+				returnAux = 1;
+			}
+    	}
+    }else
+    {
+    	returnAux = -1;
+    }
     return returnAux;
 }
 
