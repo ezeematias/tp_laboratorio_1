@@ -137,7 +137,12 @@ int test_addNode(LinkedList* this, int nodeIndex,void* pElement)
 int ll_add(LinkedList* this, void* pElement)
 {
     int returnAux = -1;
-
+    int len = ll_len(this);
+    if(this != NULL && len > -1)
+    {
+		addNode(this, len, pElement);
+		returnAux = 0;
+    }
     return returnAux;
 }
 
@@ -152,7 +157,16 @@ int ll_add(LinkedList* this, void* pElement)
 void* ll_get(LinkedList* this, int index)
 {
     void* returnAux = NULL;
-
+    Node* nodeReturn = NULL;
+	int len = ll_len(this);
+    if(this != NULL && index > -1 && index < len)
+    {
+		nodeReturn = getNode(this, index);
+		if(nodeReturn != NULL)
+		{
+			returnAux = nodeReturn->pElement;
+		}
+    }
     return returnAux;
 }
 
@@ -169,7 +183,17 @@ void* ll_get(LinkedList* this, int index)
 int ll_set(LinkedList* this, int index,void* pElement)
 {
     int returnAux = -1;
-
+    Node* nodeReturn = NULL;
+	int len = ll_len(this);
+    if(this != NULL && index > -1 && index < len)
+    {
+		nodeReturn = getNode(this, index);
+		if(nodeReturn != NULL)
+		{
+			nodeReturn->pElement = pElement;
+			returnAux = 0;
+		}
+    }
     return returnAux;
 }
 
@@ -185,7 +209,29 @@ int ll_set(LinkedList* this, int index,void* pElement)
 int ll_remove(LinkedList* this,int index)
 {
     int returnAux = -1;
-
+    Node* nodeReturn = NULL;
+    Node* lastNode = NULL;
+	int len = ll_len(this);
+    if(this != NULL && index > -1 && index < len)
+    {
+		nodeReturn = getNode(this, index);
+    	if(nodeReturn != NULL)
+    	{
+			if(index == 0)
+			{
+				this->pFirstNode = nodeReturn->pNextNode;
+				free(nodeReturn);
+				returnAux = 0;
+			}else
+			{
+				lastNode = getNode(this, index-1);
+				lastNode->pNextNode = nodeReturn->pNextNode;
+				free(nodeReturn);
+				returnAux = 0;
+			}
+			this->size--;
+    	}
+    }
     return returnAux;
 }
 
@@ -200,7 +246,22 @@ int ll_remove(LinkedList* this,int index)
 int ll_clear(LinkedList* this)
 {
     int returnAux = -1;
-
+    Node* nodeReturn = NULL;
+	int len = ll_len(this);
+    if(this != NULL && len > 0)
+    {
+    	for(int i=0; i < len; i++)
+    	{
+			nodeReturn = getNode(this, i);
+			if(nodeReturn != NULL)
+			{
+				free(nodeReturn);
+				this->size--;
+			}
+    	}
+    	this->pFirstNode = NULL;
+    	returnAux = 0;
+    }
     return returnAux;
 }
 
@@ -215,7 +276,12 @@ int ll_clear(LinkedList* this)
 int ll_deleteLinkedList(LinkedList* this)
 {
     int returnAux = -1;
-
+    if(this != NULL)
+    {
+    	ll_clear(this);
+    	free(this);
+    	returnAux = 0;
+    }
     return returnAux;
 }
 
@@ -230,7 +296,20 @@ int ll_deleteLinkedList(LinkedList* this)
 int ll_indexOf(LinkedList* this, void* pElement)
 {
     int returnAux = -1;
-
+    Node* nodeReturn = NULL;
+	int len = ll_len(this);
+    if(this != NULL && len > 0)
+    {
+    	for(int i=0; i < len; i++)
+    	{
+			nodeReturn = getNode(this, i);
+			if(nodeReturn != NULL && nodeReturn->pElement == pElement)
+			{
+				returnAux = i;
+				break;
+			}
+    	}
+    }
     return returnAux;
 }
 
@@ -245,7 +324,16 @@ int ll_indexOf(LinkedList* this, void* pElement)
 int ll_isEmpty(LinkedList* this)
 {
     int returnAux = -1;
-
+    if(this != NULL)
+    {
+    	if(this->pFirstNode == NULL && this->size == 0)
+    	{
+			returnAux = 1;
+    	}else
+    	{
+    		returnAux = 0;
+    	}
+    }
     return returnAux;
 }
 
@@ -261,7 +349,14 @@ int ll_isEmpty(LinkedList* this)
 int ll_push(LinkedList* this, int index, void* pElement)
 {
     int returnAux = -1;
-
+    int len = ll_len(this);
+    if(this != NULL && index <= len && index > -1)
+    {
+		if(!addNode(this, index, pElement))
+		{
+			returnAux = 0;
+		}
+    }
     return returnAux;
 }
 
@@ -277,8 +372,18 @@ int ll_push(LinkedList* this, int index, void* pElement)
 void* ll_pop(LinkedList* this,int index)
 {
     void* returnAux = NULL;
-
-    return returnAux;
+    Node* nodeReturn = NULL;
+	int len = ll_len(this);
+    if(this != NULL && index > -1 && index < len)
+    {
+    	nodeReturn = getNode(this, index);
+		if(nodeReturn != NULL)
+		{
+			returnAux = nodeReturn->pElement;
+			ll_remove(this, index);
+		}
+    }
+	return returnAux;
 }
 
 
