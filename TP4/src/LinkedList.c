@@ -560,11 +560,10 @@ int ll_filter(LinkedList* this, int (pFunc)(void))
 	{
 		for(int i = 0;i < len;i++)
 		{
-			if(pFunc(ll_get(this, i)) == 1) // Puede ser == 0 dependiendo de la función criterio
+			if(!pFunc(ll_get(this, i))) // Puede ser == 0 dependiendo de la función criterio
 			{
 				ll_remove(this, i);
 				i--;
-				len--;
 			}
 		}
 		returnAux = 0;
