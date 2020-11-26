@@ -388,7 +388,7 @@ int utn_cal_Confirm (int* pContinuar, int reintentos)
 				reintentos--;
 		}
 
-	}while(reintentos >=0);
+	}while(reintentos >=0 && retorno !=1);
 
 	return retorno;
 }
